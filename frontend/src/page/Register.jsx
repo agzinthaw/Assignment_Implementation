@@ -1,22 +1,24 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Mail, Lock } from "lucide-react";
+import { User, Mail, Lock } from "lucide-react";
 import { FaGoogle, FaApple, FaFacebookF } from "react-icons/fa";
 
-function Login() {
+function Register() {
 
   const navigate = useNavigate();
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
 
     e.preventDefault();
 
-    if (!email || !password) {
+    if (!name || !email || !password) {
       alert("Please fill all fields");
       return;
     }
@@ -25,21 +27,19 @@ function Login() {
 
       setLoading(true);
 
-      const res = await axios.post("http://localhost:5000/api/login", {
+      const res = await axios.post("http://localhost:5000/api/register", {
+        name,
         email,
         password
       });
 
       alert(res.data.message);
 
-      // save user (optional)
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-
-      navigate("/");
+      navigate("/login");
 
     } catch (error) {
 
-      alert(error.response?.data?.message || "Login failed");
+      alert(error.response?.data?.message || "Register failed");
 
     } finally {
 
@@ -51,14 +51,14 @@ function Login() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center
+      className="min-h-screen flex items-center justify-center 
       bg-gradient-to-br from-cyan-400 via-cyan-500 to-cyan-400
       relative overflow-hidden"
     >
 
       <div
-        className="absolute inset-0 opacity-10
-        bg-[radial-gradient(circle_at_center,_white_1px,_transparent_1px)]
+        className="absolute inset-0 opacity-10 
+        bg-[radial-gradient(circle_at_center,_white_1px,_transparent_1px)] 
         bg-[length:20px_20px]"
       />
 
@@ -67,14 +67,28 @@ function Login() {
         <div className="flex items-center gap-3 mb-6">
           <div className="text-4xl">⚡</div>
           <div>
-            <h1 className="text-2xl font-semibold">Login</h1>
+            <h1 className="text-2xl font-semibold">Register</h1>
             <p className="text-sm opacity-90">
-              Sign in to your account
+              Create an account to get started
             </p>
           </div>
         </div>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
+
+          {/* NAME */}
+          <div className="relative">
+            <User className="absolute left-3 top-3 text-gray-500" size={18} />
+            <input
+              type="text"
+              placeholder="Name"
+              value={name}
+              onChange={(e)=>setName(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 rounded-md 
+              text-black bg-white focus:outline-none 
+              focus:ring-2 focus:ring-black"
+            />
+          </div>
 
           {/* EMAIL */}
           <div className="relative">
@@ -84,8 +98,8 @@ function Login() {
               placeholder="Email"
               value={email}
               onChange={(e)=>setEmail(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-md
-              text-black bg-white focus:outline-none
+              className="w-full pl-10 pr-4 py-2 rounded-md 
+              text-black bg-white focus:outline-none 
               focus:ring-2 focus:ring-black"
             />
           </div>
@@ -98,8 +112,8 @@ function Login() {
               placeholder="Password"
               value={password}
               onChange={(e)=>setPassword(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-md
-              text-black bg-white focus:outline-none
+              className="w-full pl-10 pr-10 py-2 rounded-md 
+              text-black bg-white focus:outline-none 
               focus:ring-2 focus:ring-black"
             />
           </div>
@@ -108,15 +122,15 @@ function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-black text-white py-2.5 rounded-md
+            className="w-full bg-black text-white py-2.5 rounded-md 
             hover:bg-gray-800 transition font-medium"
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Registering..." : "Register"}
           </button>
 
         </form>
 
-        {/* SOCIAL */}
+        {/* SOCIAL LOGIN */}
         <div className="flex justify-center gap-4 mt-6 text-xl">
           <FaGoogle className="cursor-pointer hover:scale-110 transition"/>
           <FaApple className="cursor-pointer hover:scale-110 transition"/>
@@ -129,4 +143,4 @@ function Login() {
 
 }
 
-export default Login;
+export default Register;

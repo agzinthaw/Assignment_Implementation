@@ -4,6 +4,7 @@ import './index.css'
 import App from './App.jsx'
 import Home from './page/home.jsx'
 import Login from './page/login.jsx'
+import Register from './page/Register.jsx'
 import {
   createBrowserRouter,
   RouterProvider,
@@ -24,6 +25,9 @@ const router = createBrowserRouter([
       },
       { path: "contact",
         element: <h1>Contact</h1>
+      },
+        { path: "/register",
+        element: <Register></Register>
       }
     ]
   },
