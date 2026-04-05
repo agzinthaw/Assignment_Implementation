@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const authRoutes = require("./routes/auth");
+const chatRoutes = require("./routes/chat");
 
 const app = express();
 
@@ -23,6 +24,7 @@ mongoose.connect(process.env.MONGO_URI)
 });
 
 app.use("/api", authRoutes);
+app.use("/api", chatRoutes);
 
 app.get("/", (req, res) => {
   res.send("Server working ✅");
